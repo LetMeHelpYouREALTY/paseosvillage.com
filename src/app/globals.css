@@ -102,3 +102,4 @@ figure { margin: 0; }
   .section { padding: 56px 0; }
   .header-deploy { display: none; }
 }
+realscout-office-listings { --rs-listing-divider-color: rgb(101, 141, 172); width: 100%; }

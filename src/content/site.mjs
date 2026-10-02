@@ -43,7 +43,7 @@ export const calendlyLabels = {
 };
 
 /** RealScout: set the agent's encoded id to render the live widget. */
-export const realscoutAgentId = process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID || "";
+export const realscoutAgentId = process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID || "QWdlbnQtMjI1MDUw";
 export const realscoutSearchUrl = "https://drjanduffy.realscout.com/homesearch/map";
 
 export const nav = [

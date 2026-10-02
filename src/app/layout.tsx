@@ -67,6 +67,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <Script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module" strategy="beforeInteractive" />
         <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
