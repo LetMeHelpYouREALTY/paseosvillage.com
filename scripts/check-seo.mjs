@@ -5,14 +5,13 @@ const base = (process.env.SEO_CHECK_URL || "http://localhost:3000").replace(
 );
 const pages = [
   "/",
-  "/docs",
-  "/docs/zh",
-  "/about",
-  "/examples",
-  "/examples/articles",
-  "/examples/articles/canonical-urls",
-  "/examples/articles/social-images",
-  "/examples/product",
+  "/buy-homes-in-the-paseos-summerlin",
+  "/sell-your-paseos-summerlin-home",
+  "/relocate-to-the-paseos-summerlin",
+  "/the-paseos-village-guide",
+  "/about-dr-jan-duffy",
+  "/paseos-village-faq",
+  "/book-a-consultation",
 ];
 const decode = (s) =>
   s
@@ -77,44 +76,20 @@ for (const [path, html] of results) {
     count++;
   }
 }
-for (const path of ["/", "/docs", "/docs/zh", "/about"]) {
-  const html = results.find(([p]) => p === path)[1];
-  for (const domain of ["h3run.com", "h3maxlive.com", "image-2-5.com"]) {
-    const tag = tags(html, "a").find(
-      (t) => attr(t, "href") === `https://${domain}`,
-    );
-    check(
-      Boolean(tag) && !attr(tag, "rel")?.includes("nofollow"),
-      `${path}: author link ${domain}`,
-    );
-  }
-}
-for (const path of ["/docs", "/docs/zh"]) {
-  const html = results.find(([p]) => p === path)[1];
-  check(
-    tags(html, "link").some(
-      (t) =>
-        attr(t, "hreflang") === "zh-CN" &&
-        attr(t, "href") === `${origin}/docs/zh`,
-    ),
-    `${path}: Chinese alternate`,
-  );
-  check(
-    tags(html, "link").some(
-      (t) =>
-        attr(t, "hreflang") === "en" && attr(t, "href") === `${origin}/docs`,
-    ),
-    `${path}: English alternate`,
-  );
-  check(
-    !html.includes('href="README-zh.md"'),
-    `${path}: no broken README link`,
-  );
-  for (const tag of tags(html, "a")) {
-    const href = attr(tag, "href");
-    if (href?.startsWith("#"))
-      check(html.includes(`id="${href.slice(1)}"`), `${path}: anchor ${href}`);
-  }
+for (const [path, html] of results) {
+  check(tags(html, "form").length === 0, `${path}: no forms`);
+  check(!/placeholder/i.test(html.replace(/<script[\s\S]*?<\/script>/g, "")), `${path}: no placeholder text`);
+  check(html.includes("realscout"), `${path}: RealScout present`);
+  check(html.indexOf("id=\"listings\"") > html.indexOf("</h1>") && html.indexOf("id=\"listings\"") < html.indexOf("id=\"" + html.match(/<section id="([^"]+)" class="section/)[1] + "\""), `${path}: RealScout directly under hero`);
+  check(html.includes("calendly.com/drjanduffy"), `${path}: Calendly links`);
+  check(html.includes("calendly-inline-widget"), `${path}: Calendly inline`);
+  const h2 = tags(html, "h2").length;
+  const h3 = (html.match(/<h3\b/g) || []).length;
+  const imgs = tags(html, "img").filter((t) => attr(t, "src")?.includes("/images/"));
+  check(imgs.length >= 1 + h2 + h3 - 1, `${path}: image for each H1/H2/H3 (${imgs.length} images, ${h2} h2, ${h3} h3)`);
+  for (const t of imgs) check(attr(t, "alt")?.length > 15, `${path}: descriptive alt`);
+  check(html.includes('"@type":"FAQPage"'), `${path}: FAQ schema`);
+  check(html.includes("RealEstateAgent"), `${path}: agent schema`);
 }
 const sitemap = await fetch(base + "/sitemap.xml");
 check(sitemap.status === 200, "sitemap status");
@@ -132,10 +107,7 @@ check(
   "robots allows reading noindex directives",
 );
 check(robotsText.includes("Sitemap:") === indexable, "robots sitemap policy");
-for (const path of [
-  "/missing-seo-check-page",
-  "/examples/articles/missing-article",
-]) {
+for (const path of ["/missing-seo-check-page", "/paseos-missing"]) {
   const res = await fetch(base + path);
   check(res.status === 404, `${path}: real 404`);
 }
@@ -155,14 +127,10 @@ for (const path of [
     `${path}: PNG bytes`,
   );
 }
-for (const path of ["/brands/h3run.png", "/brands/image25.svg"])
-  check((await fetch(base + path)).status === 200, `${path}: brand asset`);
-const legacy = await fetch(base + "/README-zh.md", { redirect: "manual" });
-check(
-  [307, 308].includes(legacy.status) &&
-    legacy.headers.get("location")?.endsWith("/docs/zh"),
-  "legacy README route",
-);
+for (const path of ["/images/home-hero.svg", "/images/buy-s1c1.svg"])
+  check((await fetch(base + path)).status === 200, `${path}: illustration`);
+const legacy = await fetch(base + "/docs", { redirect: "manual" });
+check([307, 308].includes(legacy.status), "legacy /docs redirects");
 console.log(
   `Passed ${count} SEO response checks against ${base}; canonical origin ${origin}; indexable=${indexable}.`,
 );
