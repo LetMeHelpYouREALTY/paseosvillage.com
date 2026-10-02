@@ -57,6 +57,9 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+        {/* RealScout embed code: module scripts are deferred, so the sync-script rule does not apply. */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module"></script>
       </head>
       <body>
         <a className="skip-link" href="#main">
@@ -67,7 +70,6 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <Script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module" strategy="beforeInteractive" />
         <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
