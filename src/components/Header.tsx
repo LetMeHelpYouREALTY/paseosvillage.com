@@ -2,70 +2,43 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ArrowUpRight, Menu, SunMoon, X } from "lucide-react";
-import Brand from "./Brand";
+import { Menu, X } from "lucide-react";
+import { CalendlyButton } from "@/components/Calendly";
+import { calendlyTypes, nav } from "@/content/site.mjs";
 
-export default function Header({
-  deployURL,
-  repository,
-}: {
-  deployURL: string;
-  repository: string;
-}) {
+export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  function toggleTheme() {
-    const dark =
-      document.documentElement.dataset.theme === "dark" ||
-      (!document.documentElement.dataset.theme &&
-        matchMedia("(prefers-color-scheme: dark)").matches);
-    const next = !dark;
-    document.documentElement.dataset.theme = next ? "dark" : "light";
-    try {
-      localStorage.setItem("theme", next ? "dark" : "light");
-    } catch {}
-  }
-  const navigation = [
-    ["Examples", "/examples"],
-    ["Docs", "/docs"],
-    ["About", "/about"],
-  ];
   return (
     <header className="site-header">
       <div className="shell header-inner">
-        <Link href="/" aria-label="SEO Next.js Starter home">
-          <Brand />
+        <Link href="/" className="brand" aria-label="The Paseo Village by Dr. Jan Duffy, home">
+          <span className="brand-mark" aria-hidden="true">P</span>
+          <span>
+            The Paseo Village
+            <span className="brand-light"> · Dr. Jan Duffy</span>
+          </span>
         </Link>
         <nav
           id="main-navigation"
           className={open ? "navigation is-open" : "navigation"}
           aria-label="Main navigation"
         >
-          {navigation.map(([label, href]) => (
+          {nav.map(([label, href]) => (
             <Link
               key={href}
               href={href}
               onClick={() => setOpen(false)}
-              aria-current={pathname.startsWith(href) ? "page" : undefined}
+              aria-current={pathname === href ? "page" : undefined}
             >
               {label}
             </Link>
           ))}
-          <a href={repository} target="_blank" rel="noopener noreferrer">
-            GitHub <ArrowUpRight size={13} />
-          </a>
         </nav>
         <div className="header-actions">
-          <button
-            className="icon-button"
-            onClick={toggleTheme}
-            aria-label="Toggle color theme"
-          >
-            <SunMoon size={18} />
-          </button>
-          <a className="button button-dark header-deploy" href={deployURL}>
-            Deploy <span aria-hidden="true">▲</span>
-          </a>
+          <span className="header-deploy">
+            <CalendlyButton url={calendlyTypes.general}>Book a time</CalendlyButton>
+          </span>
           <button
             className="icon-button menu-button"
             aria-label={open ? "Close navigation" : "Open navigation"}

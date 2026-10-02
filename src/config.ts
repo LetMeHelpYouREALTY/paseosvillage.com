@@ -1,12 +1,12 @@
 import { canIndex, resolveSiteUrl } from "@/lib/site-url.mjs";
 
 export const siteName =
-  process.env.NEXT_PUBLIC_SITE_NAME || "SEO Next.js Starter";
+  process.env.NEXT_PUBLIC_SITE_NAME || "The Paseo Village | Dr. Jan Duffy";
 export const title =
-  process.env.NEXT_PUBLIC_TITLE || "SEO foundations for your next launch";
+  process.env.NEXT_PUBLIC_TITLE || "Paseos Village Summerlin Realtor | Dr. Jan Duffy";
 export const description =
   process.env.NEXT_PUBLIC_DESCRIPTION ||
-  "An open-source Next.js starter with page metadata, sitemaps, social images, and practical SEO examples you can inspect and adapt.";
+  "Dr. Jan Duffy is a Berkshire Hathaway HomeServices REALTOR® focused on The Paseos Village in Summerlin, Las Vegas (89138). Search homes and book a consultation.";
 export const baseURL = resolveSiteUrl(process.env);
 export const indexable = canIndex(process.env);
 export const repository = "https://github.com/wangrunlin/seo-nextjs-starter";

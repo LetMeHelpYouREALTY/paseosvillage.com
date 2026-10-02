@@ -15,7 +15,7 @@ export function pageMetadata(
   const image = new URL(`/api/og?title=${encodeURIComponent(title)}`, baseURL)
     .href;
   return {
-    title: { absolute: `${title} | ${siteName}` },
+    title: { absolute: title },
     description,
     alternates: { canonical: url },
     robots: { index: indexable, follow: true },
@@ -24,6 +24,7 @@ export function pageMetadata(
       description,
       url,
       siteName,
+      locale: "en_US",
       type: "website",
       images: [{ url: image, width: 1200, height: 630, alt: title }],
     },

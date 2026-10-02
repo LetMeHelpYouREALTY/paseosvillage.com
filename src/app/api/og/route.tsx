@@ -3,7 +3,7 @@ import { siteName } from "@/config";
 export async function GET(request: Request) {
   const pageTitle =
     new URL(request.url).searchParams.get("title")?.trim().slice(0, 100) ||
-    "Build something worth finding.";
+    "Paseos Village Realtor, Summerlin";
   return new ImageResponse(
     <div
       style={{
@@ -29,12 +29,12 @@ export async function GET(request: Request) {
             width: 46,
             height: 46,
             borderRadius: 10,
-            background: "#225cf6",
+            background: "#b8553a",
             color: "white",
             fontSize: 32,
           }}
         >
-          ↗
+          P
         </div>
         {siteName.slice(0, 55)}
       </div>
@@ -61,8 +61,8 @@ export async function GET(request: Request) {
           paddingTop: 25,
         }}
       >
-        <span>Next.js · Metadata · Sitemaps · Social images</span>
-        <span>OPEN SOURCE / MIT</span>
+        <span>The Paseos · Summerlin · Las Vegas, NV 89138</span>
+        <span>Dr. Jan Duffy, REALTOR®</span>
       </div>
     </div>,
     {
