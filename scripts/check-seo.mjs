@@ -80,6 +80,12 @@ for (const [path, html] of results) {
   check(tags(html, "form").length === 0, `${path}: no forms`);
   check(!/placeholder/i.test(html.replace(/<script[\s\S]*?<\/script>/g, "")), `${path}: no placeholder text`);
   check(html.includes("realscout"), `${path}: RealScout present`);
+  check(
+    html.includes(
+      'agent-encoded-id="QWdlbnQtMjI1MDUw"',
+    ) && html.includes("realscout-office-listings"),
+    `${path}: office listings carousel embed`,
+  );
   check(html.indexOf("id=\"listings\"") > html.indexOf("</h1>") && html.indexOf("id=\"listings\"") < html.indexOf("id=\"" + html.match(/<section id="([^"]+)" class="section/)[1] + "\""), `${path}: RealScout directly under hero`);
   check(html.includes("calendly.com/drjanduffy"), `${path}: Calendly links`);
   check(html.includes("calendly-inline-widget"), `${path}: Calendly inline`);

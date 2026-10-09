@@ -42,8 +42,21 @@ export const calendlyLabels = {
   transition: "Book a private transition call",
 };
 
-/** RealScout: set the agent's encoded id to render the live widget. */
-export const realscoutAgentId = process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID || "QWdlbnQtMjI1MDUw";
+/** Encoded id from the office-listings embed. Base64 of "Agent-225050". */
+export const defaultRealscoutAgentId = "QWdlbnQtMjI1MDUw";
+
+/**
+ * The office carousel calls RealScout with this value as `agent_encoded_id`.
+ * A bare number such as 225050 is the agent id, not the encoded widget id, and the API 404s.
+ */
+export function realscoutAgentEncodedId(raw = process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID) {
+  const value = (raw ?? "").trim();
+  if (!value) return defaultRealscoutAgentId;
+  const encoded = /^\d+$/.test(value) ? btoa(`Agent-${value}`) : value;
+  return /^[A-Za-z0-9+/=]+$/.test(encoded) ? encoded : defaultRealscoutAgentId;
+}
+
+export const realscoutAgentId = realscoutAgentEncodedId();
 export const realscoutSearchUrl = "https://drjanduffy.realscout.com/homesearch/map";
 
 export const nav = [
