@@ -1,14 +1,66 @@
 "use client";
+
+import Script from "next/script";
 import { useEffect, useRef } from "react";
 
+const CALENDLY_CSS = "https://assets.calendly.com/assets/external/widget.css";
+const CALENDLY_JS = "https://assets.calendly.com/assets/external/widget.js";
+
 type CalendlyApi = {
-  initPopupWidget: (o: { url: string }) => void;
-  initInlineWidget: (o: { url: string; parentElement: HTMLElement }) => void;
+  initPopupWidget: (options: { url: string }) => void;
+  initInlineWidget: (options: {
+    url: string;
+    parentElement: HTMLElement;
+    inlineStyles?: boolean;
+  }) => void;
 };
+
 const api = () =>
   (window as unknown as { Calendly?: CalendlyApi }).Calendly;
 
-/** Opens Calendly in a popup; falls back to a normal link before the script loads. */
+let resolveCalendlyReady: () => void = () => {};
+const calendlyReady = new Promise<void>((resolve) => {
+  resolveCalendlyReady = resolve;
+});
+
+let cssPromise: Promise<void> | null = null;
+
+/** Loads the widget stylesheet once, after first paint, from a browser event. */
+export function loadCalendlyCss(): Promise<void> {
+  if (cssPromise) return cssPromise;
+  cssPromise = new Promise<void>((resolve, reject) => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = CALENDLY_CSS;
+    link.onload = () => resolve();
+    link.onerror = () => {
+      link.remove();
+      cssPromise = null;
+      reject(new Error("Calendly stylesheet failed to load"));
+    };
+    document.head.appendChild(link);
+  });
+  return cssPromise;
+}
+
+function warmCalendlyCss() {
+  if (api()) void loadCalendlyCss();
+}
+
+/** Idle Calendly loader. onLoad is client-only, so the server layout cannot own this script. */
+export function CalendlyScript() {
+  return (
+    <Script
+      src={CALENDLY_JS}
+      strategy="lazyOnload"
+      onLoad={() => {
+        resolveCalendlyReady();
+      }}
+    />
+  );
+}
+
+/** Opens Calendly in a popup; the link still works before the script loads. */
 export function CalendlyButton({
   url,
   children,
@@ -24,12 +76,18 @@ export function CalendlyButton({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      onPointerDown={warmCalendlyCss}
+      onFocus={warmCalendlyCss}
       onClick={(event) => {
         const calendly = api();
-        if (calendly) {
-          event.preventDefault();
-          calendly.initPopupWidget({ url });
-        }
+        if (!calendly) return;
+        event.preventDefault();
+        loadCalendlyCss().then(
+          () => calendly.initPopupWidget({ url }),
+          () => {
+            window.open(url, "_blank", "noopener,noreferrer");
+          },
+        );
       }}
     >
       {children}
@@ -37,21 +95,44 @@ export function CalendlyButton({
   );
 }
 
-/** Inline Calendly scheduler; the visible link below it works without JavaScript. */
+/** Inline scheduler. The shell is server-rendered; the iframe waits until the section is near. */
 export function CalendlyInline({ url }: { url: string }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    let tries = 0;
-    const timer = setInterval(() => {
-      const calendly = api();
-      const node = ref.current;
-      if (calendly && node) {
-        if (!node.querySelector("iframe"))
-          calendly.initInlineWidget({ url, parentElement: node });
-        clearInterval(timer);
-      } else if (++tries > 40) clearInterval(timer);
-    }, 250);
-    return () => clearInterval(timer);
+    const node = ref.current;
+    if (!node) return;
+    let active = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void (async () => {
+          await loadCalendlyCss().catch(() => undefined);
+          if (!api()) await calendlyReady;
+          if (!active || !node.isConnected || node.querySelector("iframe")) {
+            return;
+          }
+          api()?.initInlineWidget({
+            url,
+            parentElement: node,
+            inlineStyles: true,
+          });
+        })();
+      },
+      { rootMargin: "600px 0px" },
+    );
+    observer.observe(node);
+    return () => {
+      active = false;
+      observer.disconnect();
+    };
   }, [url]);
-  return <div ref={ref} className="calendly-inline-widget" data-url={url} />;
+  return (
+    <div
+      ref={ref}
+      className="calendly-inline-widget"
+      data-url={url}
+      data-auto-load="false"
+    />
+  );
 }
