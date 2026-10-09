@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import RealScout from "@/components/RealScout";
 import { CalendlyButton, CalendlyInline } from "@/components/Calendly";
-import { baseURL, siteName } from "@/config";
+import { baseURL } from "@/config";
 import { breadcrumbs } from "@/lib/seo";
 import {
   calendlyLabels,
@@ -11,7 +12,7 @@ import {
   realscoutAgentId,
   realscoutSearchUrl,
 } from "@/content/site.mjs";
-import { sharedImages } from "@/content/pages.mjs";
+import { pageByKey, sharedImages } from "@/content/pages.mjs";
 import type { pages } from "@/content/pages.mjs";
 
 type Page = (typeof pages)[number];
@@ -56,9 +57,12 @@ function Picture({
 export default function PageView({ page }: { page: Page }) {
   const url = abs(page.path);
   const faqs = page.faqFromCards
-    ? page.sections.flatMap((s) =>
-        s.cards.map((c) => ({ q: c.h3, a: c.text })),
-      )
+    ? [
+        ...page.sections.flatMap((s) =>
+          s.cards.map((c) => ({ q: c.h3, a: c.text })),
+        ),
+        ...page.faqs.map((f) => ({ q: f.q, a: f.a })),
+      ]
     : page.faqs.map((f) => ({ q: f.q, a: f.a }));
   const crumbs = [{ name: "Home", path: "/" }];
   if (page.path !== "/") crumbs.push({ name: page.navTitle, path: page.path });
@@ -84,7 +88,7 @@ export default function PageView({ page }: { page: Page }) {
           },
           speakable: {
             "@type": "SpeakableSpecification",
-            cssSelector: [".page-answer", ".answer"],
+            cssSelector: [".page-answer"],
           },
           hasPart: page.sections.map((s) => ({
             "@type": "WebPageElement",
@@ -94,7 +98,7 @@ export default function PageView({ page }: { page: Page }) {
           })),
         }}
       />
-      <JsonLd data={breadcrumbs(crumbs)} />
+      {crumbs.length > 1 && <JsonLd data={breadcrumbs(crumbs)} />}
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -141,10 +145,10 @@ export default function PageView({ page }: { page: Page }) {
               />
             </figure>
             <div>
-              <h2 id="listings-h2">Search Paseos Village homes for sale</h2>
+              <h2 id="listings-h2">{page.listingsH2 || "Current listings from Dr. Duffy's RealScout feed"}</h2>
               <p className="answer">
-                Live Summerlin MLS listings from Dr. Jan Duffy&apos;s RealScout
-                search, including The Paseos (ZIP {place.postalCode}).
+                {page.listingsIntro ||
+                  `Current listings from Dr. Jan Duffy's RealScout feed. Open the map search to filter to The Paseos Village (ZIP ${place.postalCode}) and Summerlin.`}
               </p>
             </div>
           </div>
@@ -204,7 +208,7 @@ export default function PageView({ page }: { page: Page }) {
                     <article key={c.h3} className="card">
                       <Picture
                         image={c.image}
-                        alt={`${c.h3}: illustration for The Paseos Village, Summerlin`}
+                        alt=""
                       />
                       <h3>{c.h3}</h3>
                       <p>{c.text}</p>
@@ -225,6 +229,17 @@ export default function PageView({ page }: { page: Page }) {
         );
       })}
 
+      <nav className="shell related" aria-label="Related pages">
+        <h2 className="related-title">Keep exploring The Paseos</h2>
+        <ul>
+          {(page.related as (keyof typeof pageByKey)[]).map((key) => (
+            <li key={key}>
+              <Link href={pageByKey[key].path}>{pageByKey[key].navTitle}: {pageByKey[key].h1}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
       <section id="faq" className="section" aria-labelledby="faq-h2">
         <div className="shell">
           <div className="listings-head">
@@ -241,7 +256,7 @@ export default function PageView({ page }: { page: Page }) {
               <article key={f.q} className="faq-item">
                 <Picture
                   image={f.image}
-                  alt={`${f.q}: illustration for The Paseos Village, Summerlin`}
+                  alt=""
                 />
                 <div>
                   <h3>{f.q}</h3>
@@ -266,7 +281,7 @@ export default function PageView({ page }: { page: Page }) {
               <h2 id="book-h2">Schedule time with Dr. Jan Duffy</h2>
               <p className="answer">
                 Pick a time that works for you on Dr. Duffy&apos;s calendar. No
-                forms. {siteName}.
+                forms, just a time that suits you.
               </p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-# The Paseo Village | Dr. Jan Duffy
+# The Paseos Village | Dr. Jan Duffy
 
 Hyper-local real estate website for The Paseos Village in Summerlin, Las Vegas (89138), for REALTOR® Dr. Jan Duffy (Berkshire Hathaway HomeServices Nevada Properties).
 

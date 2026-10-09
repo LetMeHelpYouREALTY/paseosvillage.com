@@ -1,6 +1,5 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
-import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 
 const agentNode = {
   "@context": "https://schema.org",
-  "@type": ["RealEstateAgent", "LocalBusiness"],
+  "@type": "RealEstateAgent",
   "@id": `${baseURL}/#agent`,
   name: `${agent.name}, ${agent.credential}`,
   url: baseURL,
@@ -30,6 +29,7 @@ const agentNode = {
   ],
   identifier: { "@type": "PropertyValue", name: "Nevada real estate license", value: agent.license },
   worksFor: { "@type": "Organization", name: agent.brokerage },
+  employee: { "@id": `${baseURL}/#person` },
   areaServed: [
     {
       "@type": "Place",
@@ -38,6 +38,16 @@ const agentNode = {
     },
     { "@type": "City", name: "Las Vegas, Nevada" },
   ],
+  sameAs: agent.sameAs,
+};
+const personNode = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${baseURL}/#person`,
+  name: agent.name,
+  jobTitle: agent.credential,
+  worksFor: { "@type": "Organization", name: agent.brokerage },
+  knowsLanguage: agent.languages,
   sameAs: agent.sameAs,
 };
 const siteNode = {
@@ -56,10 +66,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-        {/* RealScout embed code: module scripts are deferred, so the sync-script rule does not apply. */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module"></script>
+        <link rel="preconnect" href="https://em.realscout.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://assets.calendly.com" />
       </head>
       <body>
         <a className="skip-link" href="#main">
@@ -67,10 +75,10 @@ export default function RootLayout({
         </a>
         <JsonLd data={agentNode} />
         <JsonLd data={siteNode} />
+        <JsonLd data={personNode} />
         <Header />
         {children}
         <Footer />
-        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         )}

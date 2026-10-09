@@ -9,6 +9,7 @@
   --accent-dark: #8f3f2a;
   --soft: #f6ece0;
   --blue: #b8553a;
+  --on-accent: #fff;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@
     --accent-dark: #f09a7b;
     --soft: #2b211d;
     --blue: #e0805f;
+    --on-accent: #1a1412;
     color-scheme: dark;
   }
 }
@@ -52,7 +54,7 @@ p { color: var(--muted); margin-bottom: 12px; }
 .skip-link:focus { top: 12px; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 20px; border-radius: 8px; border: 1px solid transparent; font-size: 14px; font-weight: 700; transition: transform .18s; }
 .button:hover { transform: translateY(-2px); }
-.button-primary { background: var(--accent); color: #fff; }
+.button-primary { background: var(--accent); color: var(--on-accent); }
 .button-outline { border-color: var(--border); background: var(--surface); color: var(--foreground); }
 .site-header { border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 50; }
 .header-inner { min-height: 72px; display: flex; align-items: center; gap: 28px; }
@@ -85,7 +87,7 @@ figure { margin: 0; }
 .faq-item h3 { margin-top: 0; }
 .small-note { margin-top: 12px; font-size: 14px; }
 .small-note a { text-decoration: underline; }
-.calendly-inline-widget { min-width: 320px; height: 700px; margin-top: 12px; }
+.calendly-inline-widget { min-width: 320px; height: 700px; margin-top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
 .site-footer { border-top: 1px solid var(--border); padding: 40px 0; background: var(--surface); }
 .footer-top { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
 .footer-links { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
@@ -102,4 +104,12 @@ figure { margin: 0; }
   .section { padding: 56px 0; }
   .header-deploy { display: none; }
 }
-realscout-office-listings { --rs-listing-divider-color: rgb(101, 141, 172); width: 100%; }
+.realscout-wrap { position: relative; min-height: 640px; }
+.realscout-wrap .realscout-fallback { position: absolute; top: 0; left: 0; right: 0; }
+realscout-office-listings { display: block; --rs-listing-divider-color: rgb(101, 141, 172); width: 100%; }
+.navigation a, .footer-links a { display: inline-block; padding: 10px 0; min-height: 44px; }
+.related { padding-top: 24px; padding-bottom: 24px; }
+.related-title { font-size: 22px; }
+.related ul { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 4px; }
+.related a { display: inline-block; padding: 10px 0; text-decoration: underline; }
+@media (max-width: 900px) { .realscout-wrap { min-height: 480px; } }
