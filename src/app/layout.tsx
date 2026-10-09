@@ -1,9 +1,9 @@
 import "@/app/globals.css";
 import type { Metadata } from "next";
-import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { CalendlyIdleLoader } from "@/components/Calendly";
 import JsonLd from "@/components/JsonLd";
 import { baseURL, description, indexable, siteName } from "@/config";
 import { agent, place } from "@/content/site.mjs";
@@ -56,7 +56,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+        <link rel="preconnect" href="https://em.realscout.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://assets.calendly.com" />
         {/* RealScout embed code: module scripts are deferred, so the sync-script rule does not apply. */}
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module"></script>
@@ -70,7 +71,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
+        <CalendlyIdleLoader />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         )}
