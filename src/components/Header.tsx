@@ -12,10 +12,10 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="shell header-inner">
-        <Link href="/" className="brand" aria-label="The Paseo Village by Dr. Jan Duffy, home">
+        <Link href="/" className="brand" aria-label="The Paseos Village by Dr. Jan Duffy, home">
           <span className="brand-mark" aria-hidden="true">P</span>
           <span>
-            The Paseo Village
+            The Paseos Village
             <span className="brand-light"> · Dr. Jan Duffy</span>
           </span>
         </Link>

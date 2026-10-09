@@ -2,6 +2,8 @@
  * All page copy. Image specs ("time|motifs|seed") feed scripts/generate-images.mjs,
  * which writes original SVG illustrations to public/images.
  * Local facts are kept to what public sources support; ask Dr. Duffy for live numbers.
+ * Sources: summerlin.com (The Paseos Village overview), neighborhoodsinlasvegas.com/the-paseos-village,
+ * RealScout listing data for 89138 (Mariposa, Las Lomas), bhhsnv.com agent page, Zillow agent profile.
  */
 const raw = [
   {
@@ -11,7 +13,7 @@ const raw = [
     title: "Paseos Village Summerlin Realtor | Dr. Jan Duffy",
     description:
       "Dr. Jan Duffy is a Berkshire Hathaway HomeServices REALTOR® focused on The Paseos Village in Summerlin, Las Vegas (89138). Search homes and book a consultation.",
-    h1: "The Paseo Village in Summerlin: Your Hyper-Local Realtor, Dr. Jan Duffy",
+    h1: "The Paseos Village in Summerlin: Your Hyper-Local Realtor, Dr. Jan Duffy",
     lede: "Buying, selling or relocating to The Paseos on the west side of Summerlin? Work with a REALTOR® who focuses on this village, its streets, parks and trails.",
     answer:
       "Dr. Jan Duffy is a Las Vegas REALTOR® with Berkshire Hathaway HomeServices Nevada Properties who helps buyers and sellers in The Paseos Village, a master-planned neighborhood in Summerlin, Nevada near Red Rock Canyon.",
@@ -81,6 +83,8 @@ const raw = [
   },
   {
     key: "buy",
+    listingsH2: "Current Paseos-area homes for buyers",
+    listingsIntro: "Browse current listings from Dr. Duffy's RealScout feed, then open the map search to narrow to The Paseos Village.",
     path: "/buy-homes-in-the-paseos-summerlin",
     navTitle: "Buy",
     title: "Buy a Home in The Paseos, Summerlin | Dr. Jan Duffy",
@@ -148,6 +152,8 @@ const raw = [
   },
   {
     key: "sell",
+    listingsH2: "See the competition near your Paseos home",
+    listingsIntro: "Current listings from Dr. Duffy's RealScout feed show what buyers compare your home against.",
     path: "/sell-your-paseos-summerlin-home",
     navTitle: "Sell",
     title: "Sell Your Paseos Summerlin Home | Dr. Jan Duffy",
@@ -215,6 +221,8 @@ const raw = [
   },
   {
     key: "relocate",
+    listingsH2: "Preview homes before you move to Summerlin",
+    listingsIntro: "Browse current listings from Dr. Duffy's RealScout feed while you plan your move.",
     path: "/relocate-to-the-paseos-summerlin",
     navTitle: "Relocate",
     title: "Relocate to The Paseos, Summerlin | Dr. Jan Duffy",
@@ -547,8 +555,19 @@ const raw = [
 
 /** Assign image ids/paths so every H1, H2, H3 and FAQ question has an image. */
 const img = (id, spec) => ({ id, src: `/images/${id}.svg`, spec });
+const relatedMap = {
+  home: ["buy", "sell", "guide"],
+  buy: ["guide", "sell", "book"],
+  sell: ["buy", "guide", "book"],
+  relocate: ["buy", "guide", "book"],
+  guide: ["buy", "relocate", "faq"],
+  about: ["buy", "sell", "book"],
+  faq: ["guide", "buy", "book"],
+  book: ["buy", "sell", "relocate"],
+};
 export const pages = raw.map((p) => ({
   ...p,
+  related: relatedMap[p.key],
   hero: img(`${p.key}-hero`, p.spec),
   sections: p.sections.map((s, i) => ({
     ...s,

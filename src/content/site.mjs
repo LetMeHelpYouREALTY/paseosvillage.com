@@ -53,6 +53,7 @@ export const nav = [
   ["Village Guide", "/the-paseos-village-guide"],
   ["FAQ", "/paseos-village-faq"],
   ["About", "/about-dr-jan-duffy"],
+  ["Book", "/book-a-consultation"],
 ];
 
 /** Shared geographic facts reused as structured data. */

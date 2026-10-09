@@ -1,7 +1,7 @@
 import { canIndex, resolveSiteUrl } from "@/lib/site-url.mjs";
 
 export const siteName =
-  process.env.NEXT_PUBLIC_SITE_NAME || "The Paseo Village | Dr. Jan Duffy";
+  process.env.NEXT_PUBLIC_SITE_NAME || "The Paseos Village | Dr. Jan Duffy";
 export const title =
   process.env.NEXT_PUBLIC_TITLE || "Paseos Village Summerlin Realtor | Dr. Jan Duffy";
 export const description =

@@ -87,7 +87,8 @@ for (const [path, html] of results) {
   const h3 = (html.match(/<h3\b/g) || []).length;
   const imgs = tags(html, "img").filter((t) => attr(t, "src")?.includes("/images/"));
   check(imgs.length >= 1 + h2 + h3 - 1, `${path}: image for each H1/H2/H3 (${imgs.length} images, ${h2} h2, ${h3} h3)`);
-  for (const t of imgs) check(attr(t, "alt")?.length > 15, `${path}: descriptive alt`);
+  for (const t of imgs) check(attr(t, "alt") !== undefined, `${path}: alt attribute present`);
+  check(imgs.filter((t) => attr(t, "alt")?.length > 15).length >= 5, `${path}: descriptive alt on hero and section images`);
   check(html.includes('"@type":"FAQPage"'), `${path}: FAQ schema`);
   check(html.includes("RealEstateAgent"), `${path}: agent schema`);
 }

@@ -5,7 +5,7 @@ export default function NotFound() {
       <span className="eyebrow">404 / NOT FOUND</span>
       <h1>
         This page is not part of
-        <br />The Paseo Village site.
+        <br />The Paseos Village site.
       </h1>
       <p style={{ marginTop: 22 }}>
         The address may have changed, or the page does not exist.

@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { CalendlyIdleLoader } from "@/components/Calendly";
 import JsonLd from "@/components/JsonLd";
 import { baseURL, description, indexable, siteName } from "@/config";
 import { agent, place } from "@/content/site.mjs";
@@ -17,7 +16,7 @@ export const metadata: Metadata = {
 
 const agentNode = {
   "@context": "https://schema.org",
-  "@type": ["RealEstateAgent", "LocalBusiness"],
+  "@type": "RealEstateAgent",
   "@id": `${baseURL}/#agent`,
   name: `${agent.name}, ${agent.credential}`,
   url: baseURL,
@@ -30,6 +29,7 @@ const agentNode = {
   ],
   identifier: { "@type": "PropertyValue", name: "Nevada real estate license", value: agent.license },
   worksFor: { "@type": "Organization", name: agent.brokerage },
+  employee: { "@id": `${baseURL}/#person` },
   areaServed: [
     {
       "@type": "Place",
@@ -38,6 +38,16 @@ const agentNode = {
     },
     { "@type": "City", name: "Las Vegas, Nevada" },
   ],
+  sameAs: agent.sameAs,
+};
+const personNode = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${baseURL}/#person`,
+  name: agent.name,
+  jobTitle: agent.credential,
+  worksFor: { "@type": "Organization", name: agent.brokerage },
+  knowsLanguage: agent.languages,
   sameAs: agent.sameAs,
 };
 const siteNode = {
@@ -58,9 +68,6 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://em.realscout.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://assets.calendly.com" />
-        {/* RealScout embed code: module scripts are deferred, so the sync-script rule does not apply. */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module"></script>
       </head>
       <body>
         <a className="skip-link" href="#main">
@@ -68,10 +75,10 @@ export default function RootLayout({
         </a>
         <JsonLd data={agentNode} />
         <JsonLd data={siteNode} />
+        <JsonLd data={personNode} />
         <Header />
         {children}
         <Footer />
-        <CalendlyIdleLoader />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         )}

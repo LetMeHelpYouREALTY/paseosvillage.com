@@ -42,7 +42,7 @@ export default function RealScout({ agentId }: { agentId: string }) {
     };
   }, [agentId]);
   return (
-    <>
+    <div className="realscout-wrap">
       <div ref={host} className="realscout-host" />
       {empty && (
         <div className="realscout-fallback">
@@ -53,6 +53,6 @@ export default function RealScout({ agentId }: { agentId: string }) {
           </a>
         </div>
       )}
-    </>
+    </div>
   );
 }
