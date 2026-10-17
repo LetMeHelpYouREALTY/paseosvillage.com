@@ -1,44 +1,42 @@
 import assert from "node:assert/strict";
-const base = (process.env.SEO_CHECK_URL || "http://localhost:3000").replace(
-  /\/$/,
-  "",
-);
+
+const base = (process.env.SEO_CHECK_URL || "http://localhost:3000").replace(/\/$/, "");
 const pages = [
   "/",
-  "/buy-homes-in-the-paseos-summerlin",
-  "/sell-your-paseos-summerlin-home",
-  "/relocate-to-the-paseos-summerlin",
-  "/the-paseos-village-guide",
-  "/about-dr-jan-duffy",
-  "/paseos-village-faq",
-  "/book-a-consultation",
+  "/homes-for-sale",
+  "/market-report",
+  "/neighborhoods",
+  "/neighborhoods/capistrano",
+  "/living-in-the-paseos",
+  "/schools",
+  "/buy",
+  "/sell",
+  "/paseos-vs/stonebridge",
+  "/faq",
+  "/about",
+  "/contact",
 ];
-const decode = (s) =>
-  s
+const decode = (value) =>
+  value
     ?.replace(/&amp;/g, "&")
     .replace(/&#x27;/g, "'")
     .replace(/&quot;/g, '"');
-const attr = (tag, name) =>
-  decode(tag.match(new RegExp(`${name}="([^"]*)"`, "i"))?.[1]);
-const tags = (html, name) =>
-  html.match(new RegExp(`<${name}\\b[^>]*>`, "g")) || [];
+const attr = (tag, name) => decode(tag.match(new RegExp(`${name}="([^"]*)"`, "i"))?.[1]);
+const tags = (html, name) => html.match(new RegExp(`<${name}\\b[^>]*>`, "g")) || [];
 const meta = (html, name) =>
   attr(
-    tags(html, "meta").find(
-      (t) => attr(t, "name") === name || attr(t, "property") === name,
-    ) || "",
+    tags(html, "meta").find((tag) => attr(tag, "name") === name || attr(tag, "property") === name) || "",
     "content",
   );
 const canonical = (html) =>
-  attr(
-    tags(html, "link").find((t) => attr(t, "rel") === "canonical") || "",
-    "href",
-  );
+  attr(tags(html, "link").find((tag) => attr(tag, "rel") === "canonical") || "", "href");
+
 let count = 0;
 const check = (condition, message) => {
   assert.ok(condition, message);
   count++;
 };
+
 const results = await Promise.all(
   pages.map(async (path) => {
     const response = await fetch(base + path);
@@ -48,89 +46,82 @@ const results = await Promise.all(
 );
 const origin = new URL(canonical(results[0][1])).origin;
 const indexable = !meta(results[0][1], "robots")?.includes("noindex");
+
 for (const [path, html] of results) {
   const expected = new URL(path, origin).href;
-  check(
-    new URL(canonical(html)).href === expected,
-    `${path}: canonical must be ${expected}`,
-  );
+  check(new URL(canonical(html)).href === expected, `${path}: canonical`);
   check(new URL(meta(html, "og:url")).href === expected, `${path}: OG URL`);
-  check(meta(html, "description")?.length > 20, `${path}: description`);
-  check(
-    meta(html, "twitter:card") === "summary_large_image",
-    `${path}: Twitter card`,
-  );
-  check(
-    meta(html, "robots")?.includes(indexable ? "index" : "noindex"),
-    `${path}: indexing`,
-  );
+  check((meta(html, "description") || "").length > 20, `${path}: description`);
+  check((meta(html, "description") || "").length <= 155, `${path}: description length`);
+  check(meta(html, "twitter:card") === "summary_large_image", `${path}: Twitter card`);
+  check(meta(html, "robots")?.includes(indexable ? "index" : "noindex"), `${path}: indexing`);
   check(tags(html, "h1").length === 1, `${path}: one H1`);
-  check(
-    meta(html, "og:image")?.startsWith(origin + "/api/og?title="),
-    `${path}: page-specific OG`,
-  );
-  for (const [, json] of html.matchAll(
-    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,
-  )) {
+  check(html.toLowerCase().includes("the paseos"), `${path}: The Paseos`);
+  check(meta(html, "og:image")?.startsWith(`${origin}/api/og?title=`), `${path}: OG image`);
+  check(html.includes("RealEstateAgent"), `${path}: agent schema`);
+  check(html.includes("702-XXX-XXXX"), `${path}: site phone`);
+  check(html.includes("Last updated"), `${path}: updated line`);
+  check(!/\bfamily-friendly\b|\bexclusive\b|\bgood schools\b/i.test(html), `${path}: fair housing`);
+  for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     JSON.parse(json);
     count++;
   }
 }
-for (const [path, html] of results) {
-  check(tags(html, "form").length === 0, `${path}: no forms`);
-  check(!/placeholder/i.test(html.replace(/<script[\s\S]*?<\/script>/g, "")), `${path}: no placeholder text`);
-  check(html.includes("realscout"), `${path}: RealScout present`);
-  check(html.indexOf("id=\"listings\"") > html.indexOf("</h1>") && html.indexOf("id=\"listings\"") < html.indexOf("id=\"" + html.match(/<section id="([^"]+)" class="section/)[1] + "\""), `${path}: RealScout directly under hero`);
-  check(html.includes("calendly.com/drjanduffy"), `${path}: Calendly links`);
-  check(html.includes("calendly-inline-widget"), `${path}: Calendly inline`);
-  const h2 = tags(html, "h2").length;
-  const h3 = (html.match(/<h3\b/g) || []).length;
-  const imgs = tags(html, "img").filter((t) => attr(t, "src")?.includes("/images/"));
-  check(imgs.length >= 1 + h2 + h3 - 1, `${path}: image for each H1/H2/H3 (${imgs.length} images, ${h2} h2, ${h3} h3)`);
-  for (const t of imgs) check(attr(t, "alt")?.length > 15, `${path}: descriptive alt`);
-  check(html.includes('"@type":"FAQPage"'), `${path}: FAQ schema`);
-  check(html.includes("RealEstateAgent"), `${path}: agent schema`);
-}
-const sitemap = await fetch(base + "/sitemap.xml");
+check(results.find(([path]) => path === "/contact")?.[1].includes("<form"), "contact form");
+check(results.find(([path]) => path === "/faq")?.[1].includes("FAQPage"), "faq schema");
+
+const sitemap = await fetch(`${base}/sitemap.xml`);
 check(sitemap.status === 200, "sitemap status");
 const xml = await sitemap.text();
-for (const path of pages)
-  check(
-    xml.includes(`<loc>${new URL(path, origin).href}</loc>`) === indexable,
-    `${path}: sitemap index policy`,
-  );
-const robots = await fetch(base + "/robots.txt");
+for (const path of pages) {
+  check(xml.includes(`<loc>${new URL(path, origin).href}</loc>`) === indexable, `${path}: sitemap`);
+}
+const robots = await fetch(`${base}/robots.txt`);
 check(robots.status === 200, "robots status");
 const robotsText = await robots.text();
-check(
-  robotsText.includes("Allow: /"),
-  "robots allows reading noindex directives",
-);
+check(robotsText.includes("Allow: /"), "robots allow");
+check(robotsText.includes("GPTBot"), "GPTBot");
+check(robotsText.includes("PerplexityBot"), "PerplexityBot");
 check(robotsText.includes("Sitemap:") === indexable, "robots sitemap policy");
-for (const path of ["/missing-seo-check-page", "/paseos-missing"]) {
-  const res = await fetch(base + path);
-  check(res.status === 404, `${path}: real 404`);
-}
-for (const path of [
-  "/api/og?title=An%20inspectable%20social%20image",
-  "/icon",
-]) {
-  const res = await fetch(base + path);
-  check(
-    res.status === 200 &&
-      res.headers.get("content-type")?.includes("image/png"),
-    `${path}: PNG response`,
-  );
-  const bytes = new Uint8Array(await res.arrayBuffer());
-  check(
-    bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71,
-    `${path}: PNG bytes`,
-  );
-}
-for (const path of ["/images/home-hero.svg", "/images/buy-s1c1.svg"])
-  check((await fetch(base + path)).status === 200, `${path}: illustration`);
-const legacy = await fetch(base + "/docs", { redirect: "manual" });
-check([307, 308].includes(legacy.status), "legacy /docs redirects");
-console.log(
-  `Passed ${count} SEO response checks against ${base}; canonical origin ${origin}; indexable=${indexable}.`,
-);
+
+const missing = await fetch(`${base}/paseos-missing`);
+check(missing.status === 404, "real 404");
+const legacy = await fetch(`${base}/docs`, { redirect: "manual" });
+check([307, 308].includes(legacy.status), "legacy docs redirect");
+const oldBuy = await fetch(`${base}/buy-homes-in-the-paseos-summerlin`, { redirect: "manual" });
+check([307, 308].includes(oldBuy.status), "old buy redirect");
+
+const llms = await fetch(`${base}/llms.txt`);
+check(llms.status === 200, "llms.txt");
+check((await llms.text()).includes("The Paseos"), "llms body");
+
+const og = await fetch(`${base}/api/og?title=The%20Paseos%20Summerlin`);
+check(og.headers.get("content-type")?.includes("image/png"), "og png type");
+const bytes = new Uint8Array(await og.arrayBuffer());
+check(bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71, "og png bytes");
+
+const badLead = await fetch(`${base}/api/lead`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name: "A" }),
+});
+check(badLead.status === 400, "lead validation");
+const spam = await fetch(`${base}/api/lead`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: "Test Person",
+    email: "test@example.com",
+    phone: "7025550100",
+    message: "Looking at Capistrano.",
+    company_website: "http://spam.example",
+    intent: "buy",
+  }),
+});
+check(spam.status === 200, "honeypot accepted quietly");
+
+const headers = await fetch(base + "/");
+check(headers.headers.get("x-content-type-options") === "nosniff", "nosniff");
+check(headers.headers.get("content-security-policy")?.includes("em.realscout.com"), "csp realscout");
+
+console.log(`Passed ${count} SEO checks against ${base}; indexable=${indexable}.`);

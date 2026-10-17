@@ -1,55 +1,72 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { CalendlyButton } from "@/components/Calendly";
-import { calendlyTypes, nav } from "@/content/site.mjs";
+import { TrackedCall } from "@/components/TrackedCall";
+import { SITE_PHONE } from "@/lib/phone";
+
+const links = [
+  { href: "/homes-for-sale", label: "Homes" },
+  { href: "/neighborhoods", label: "Neighborhoods" },
+  { href: "/living-in-the-paseos", label: "Living" },
+  { href: "/market-report", label: "Market" },
+  { href: "/schools", label: "Schools" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/about", label: "About" },
+];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
   return (
-    <header className="site-header">
-      <div className="shell header-inner">
-        <Link href="/" className="brand" aria-label="The Paseo Village by Dr. Jan Duffy, home">
-          <span className="brand-mark" aria-hidden="true">P</span>
-          <span>
-            The Paseo Village
-            <span className="brand-light"> · Dr. Jan Duffy</span>
-          </span>
+    <header className="sticky top-0 z-30 border-b border-gold bg-sand/95 backdrop-blur">
+      <div className="shell flex min-h-16 items-center gap-6">
+        <Link href="/" className="text-ink no-underline">
+          <span className="font-display text-2xl leading-none">The Paseos</span>
+          <span className="mt-1 block text-xs tracking-[0.12em] uppercase text-muted">Summerlin</span>
         </Link>
-        <nav
-          id="main-navigation"
-          className={open ? "navigation is-open" : "navigation"}
-          aria-label="Main navigation"
-        >
-          {nav.map(([label, href]) => (
+        <nav className="ml-auto hidden items-center gap-4 lg:flex" aria-label="Primary">
+          {links.map((link) => (
             <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              aria-current={pathname === href ? "page" : undefined}
+              key={link.href}
+              href={link.href}
+              className="nav-link"
+              aria-current={pathname === link.href ? "page" : undefined}
             >
-              {label}
+              {link.label}
             </Link>
           ))}
         </nav>
-        <div className="header-actions">
-          <span className="header-deploy">
-            <CalendlyButton url={calendlyTypes.general}>Book a time</CalendlyButton>
-          </span>
-          <button
-            className="icon-button menu-button"
-            aria-label={open ? "Close navigation" : "Open navigation"}
-            aria-controls="main-navigation"
-            aria-expanded={open}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X size={21} /> : <Menu size={21} />}
-          </button>
-        </div>
+        <TrackedCall className="btn hidden lg:inline-flex">Call {SITE_PHONE}</TrackedCall>
+        <button
+          className="btn btn-ghost ml-auto lg:hidden"
+          type="button"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? "Close" : "Menu"}
+        </button>
       </div>
+      {open ? (
+        <nav id="mobile-nav" className="shell flex flex-col pb-4 lg:hidden" aria-label="Mobile">
+          {links.map((link) => (
+            <Link key={link.href} href={link.href} className="nav-link" onClick={() => setOpen(false)}>
+              {link.label}
+            </Link>
+          ))}
+          <Link href="/buy" className="nav-link" onClick={() => setOpen(false)}>
+            Buy
+          </Link>
+          <Link href="/sell" className="nav-link" onClick={() => setOpen(false)}>
+            Sell
+          </Link>
+          <Link href="/contact" className="nav-link" onClick={() => setOpen(false)}>
+            Contact
+          </Link>
+        </nav>
+      ) : null}
     </header>
   );
 }

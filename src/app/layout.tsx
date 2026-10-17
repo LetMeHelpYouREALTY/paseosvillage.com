@@ -1,79 +1,69 @@
 import "@/app/globals.css";
-import type { Metadata } from "next";
-import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Header from "@/components/Header";
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import JsonLd from "@/components/JsonLd";
-import { baseURL, description, indexable, siteName } from "@/config";
-import { agent, place } from "@/content/site.mjs";
+import { MotionRoot } from "@/components/MotionRoot";
+import { TrackedCall } from "@/components/TrackedCall";
+import { canIndex } from "@/lib/site-url.mjs";
+import { siteGraphs } from "@/lib/schema";
+import { SITE_NAME, SITE_PHONE, siteOrigin } from "@/lib/site";
+
+const display = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: "600",
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const body = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const origin = siteOrigin();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseURL),
-  title: { default: siteName, template: `%s | ${siteName}` },
-  description,
-  robots: { index: indexable, follow: true },
+  metadataBase: new URL(origin),
+  title: SITE_NAME,
+  description:
+    "The Paseos, a Summerlin village in Las Vegas, NV 89138, with Dr. Jan Duffy.",
+  robots: { index: canIndex(process.env), follow: true },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
-const agentNode = {
-  "@context": "https://schema.org",
-  "@type": ["RealEstateAgent", "LocalBusiness"],
-  "@id": `${baseURL}/#agent`,
-  name: `${agent.name}, ${agent.credential}`,
-  url: baseURL,
-  description,
-  knowsLanguage: agent.languages,
-  knowsAbout: [
-    "The Paseos Village Summerlin real estate",
-    "Summerlin homes for sale",
-    "California to Nevada relocation",
-  ],
-  identifier: { "@type": "PropertyValue", name: "Nevada real estate license", value: agent.license },
-  worksFor: { "@type": "Organization", name: agent.brokerage },
-  areaServed: [
-    {
-      "@type": "Place",
-      name: `${place.name}, Summerlin`,
-      address: { "@type": "PostalAddress", addressLocality: "Las Vegas", addressRegion: place.region, postalCode: place.postalCode, addressCountry: place.country },
-    },
-    { "@type": "City", name: "Las Vegas, Nevada" },
-  ],
-  sameAs: agent.sameAs,
-};
-const siteNode = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${baseURL}/#website`,
-  name: siteName,
-  url: baseURL,
-  inLanguage: "en-US",
-  publisher: { "@id": `${baseURL}/#agent` },
+export const viewport: Viewport = {
+  themeColor: "#F4EFE6",
+  width: "device-width",
+  initialScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-        {/* RealScout embed code: module scripts are deferred, so the sync-script rule does not apply. */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://em.realscout.com/widgets/realscout-web-components.umd.js" type="module"></script>
-      </head>
-      <body>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <body className="pb-16 lg:pb-0">
         <a className="skip-link" href="#main">
           Skip to content
         </a>
-        <JsonLd data={agentNode} />
-        <JsonLd data={siteNode} />
+        {siteGraphs().map((graph) => (
+          <JsonLd key={String(graph["@id"])} data={graph} />
+        ))}
         <Header />
         {children}
         <Footer />
-        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
-        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
+        <TrackedCall className="sticky-call">Call {SITE_PHONE}</TrackedCall>
+        <MotionRoot />
+        <Analytics />
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ? (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
-        )}
+        ) : null}
       </body>
     </html>
   );

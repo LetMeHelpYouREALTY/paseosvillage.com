@@ -1,9 +1,9 @@
-import PageView from "@/components/PageView";
-import { pageByKey } from "@/content/pages.mjs";
-import { pageMetadata } from "@/lib/seo";
+import { ArticlePage } from "@/components/ArticlePage";
+import { homeArticle } from "@/content/home";
+import { pageMetadata } from "@/lib/metadata";
 
-const page = pageByKey.home;
-export const metadata = pageMetadata(page.title, page.path, page.description);
-export default function Home() {
-  return <PageView page={page} />;
+export const metadata = pageMetadata(homeArticle);
+
+export default function Page() {
+  return <ArticlePage article={homeArticle} />;
 }

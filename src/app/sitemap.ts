@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
-import { baseURL, indexable } from "@/config";
-import { pages } from "@/content/pages.mjs";
+import { articles } from "@/content/registry";
+import { canIndex } from "@/lib/site-url.mjs";
+import { CONTENT_UPDATED, siteOrigin } from "@/lib/site";
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  if (!indexable) return [];
-  return pages.map((page) => ({
-    url: new URL(page.path, baseURL).href,
-    images: [new URL(page.hero.src, baseURL).href],
+  if (!canIndex(process.env)) return [];
+  const origin = siteOrigin();
+  return articles.map((article) => ({
+    url: new URL(article.path, origin).href,
+    lastModified: CONTENT_UPDATED,
   }));
 }

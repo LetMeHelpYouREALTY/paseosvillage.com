@@ -1,7 +1,7 @@
 # Repository guidance
 
-- This is a public Next.js SEO starter. Use English for public UI, code documentation, and Conventional Commit messages, matching repository history. Provide Chinese translations for user review when requested.
-- Preserve the MIT license, working examples, and existing public URLs. Keep demo content clearly identified; do not claim rankings, adoption, or performance scores without evidence.
+- This is the Paseos Summerlin site for Dr. Jan Duffy. Use English for public UI, code documentation, and Conventional Commit messages. Provide Chinese translations for user review when requested.
+- Preserve the MIT license and existing public URLs via redirects. Keep demo claims out of the site. Do not publish unsourced prices, rankings, or fair-housing proxies.
 - Inspect installed Next.js documentation before relying on unfamiliar version-specific APIs. Keep Next, eslint-config-next, and @next/third-parties aligned.
 - Use Node.js 22.x and pnpm 11.24.0. Keep the lockfile current. Run `pnpm check`; for SEO changes also run a production server and `pnpm test:seo`.
 - Maintain per-page canonical/OG data, sitemap routes, preview noindex, document language alternates, SSR/SSG content, and actual 404 status codes together.

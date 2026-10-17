@@ -1,11 +1,16 @@
-# The Paseo Village | Dr. Jan Duffy
+# The Paseos Summerlin
 
-Hyper-local real estate website for The Paseos Village in Summerlin, Las Vegas (89138), for REALTOR® Dr. Jan Duffy (Berkshire Hathaway HomeServices Nevada Properties).
+Luxury village site for The Paseos in Summerlin, Las Vegas, NV 89138, published for Dr. Jan Duffy, REALTOR® (Nevada license S.0197614.LLC), Berkshire Hathaway HomeServices Nevada Properties.
 
-- Next.js app with eight SEO/GEO/AEO-structured pages (copy in `src/content/pages.mjs`).
-- RealScout listings directly under every hero (`NEXT_PUBLIC_REALSCOUT_AGENT_ID`; falls back to a link to the RealScout search until set).
-- Calendly scheduling everywhere (popup buttons plus an inline scheduler); no forms.
-- Original SVG illustrations for every H1/H2/H3, generated with `node scripts/generate-images.mjs`.
-- Run `pnpm check`, then start a production server and run `pnpm test:seo`.
+Place facts live in `src/data/paseos.ts` with a source, URL, and date. Conflicting prices, acreage, and home counts stay unpublished. The phone number is the single constant `SITE_PHONE`.
 
-Starter-template routes (`/docs`, `/examples`, `/about`) now redirect; their source files remain and can be deleted.
+## Scripts
+
+- `pnpm check` runs lint, fair-housing, types, unit tests, schema validation, and the production build.
+- For SEO changes, start `pnpm start` after the build and run `pnpm test:seo`.
+
+Do not deploy until `docs/launch-checklist.md` is clear. Photos are specified in `docs/photo-brief.md`.
+
+## Stack
+
+Next.js 16 App Router, TypeScript, Tailwind CSS v4, RealScout (lazy), and a lead route that posts to Follow Up Boss when `FUB_API_KEY` is set.
