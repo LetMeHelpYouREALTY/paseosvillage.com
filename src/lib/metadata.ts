@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Article } from "@/content/types";
+import { markdownPath } from "@/lib/markdown";
 import { canIndex } from "@/lib/site-url.mjs";
 import { SITE_NAME, siteOrigin } from "@/lib/site";
 
@@ -14,7 +15,12 @@ export function pageMetadata(article: Article): Metadata {
   return {
     title: { absolute: article.title },
     description: article.description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      types: {
+        "text/markdown": new URL(markdownPath(article.path), origin).href,
+      },
+    },
     robots: { index: indexable, follow: true },
     openGraph: {
       title: article.title,

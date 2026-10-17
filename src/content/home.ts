@@ -30,7 +30,7 @@ export const homeArticle: Article = {
         "The Paseos is a village in Summerlin, a short distance west of the 215 Beltway in Las Vegas.",
       paragraphs: [
         "Summerlin.com, on February 28, 2019, called The Paseos one of more than two dozen villages in Summerlin. The same page said the village sits a short distance west of the 215 Beltway. That road is one of the main routes between Summerlin and the rest of the valley.",
-        "The Howard Hughes Corporation developed Summerlin. The 2019 article boilerplate says Summerlin began to take shape in 1990 and covers 22,500 acres. Those figures describe the master plan, not the acreage of this village. Village acreage claims of about 500 acres and about 750 acres both exist in third-party notes. Neither is published here until Clark County or Howard Hughes confirms one number.",
+        "The Howard Hughes Corporation developed Summerlin. The 2019 article boilerplate says Summerlin began to take shape in 1990 and covers 22,500 acres. Those figures describe the master plan, not the acreage of this village. Two village acreage claims exist in third-party notes, and they conflict. Neither is published here until Clark County or Howard Hughes confirms one number.",
         "ZIP code 89138 is the code this site uses for the village. The Summerlin.com pages reviewed for this build did not print that ZIP in the article text. Dr. Jan still needs to confirm it against the assessor roll. Until that check, treat 89138 as the working code, not a surveyed boundary.",
         "Red Rock Canyon National Conservation Area is the western backdrop in the February 2019 article. The village is not the conservation area. Trails inside the park and trails inside Summerlin are different systems with different rules.",
       ],
@@ -41,7 +41,7 @@ export const homeArticle: Article = {
       answer:
         "A median price is not listed here. Dr. Jan will publish one only after a fresh MLS pull.",
       paragraphs: [
-        "Different 2026 windows have been quoted near $865,000 and near $1.04 million. Those figures disagree, and this site will not pick one. The value fields for both claims are blank on purpose. A blank is better than a wrong median.",
+        "Two 2026 median figures have been quoted from different date windows. Those figures disagree, and this site will not pick one. The value fields for both claims are blank on purpose. A blank is better than a wrong median.",
         "Builder brochures from before April 2019 printed asking prices for new homes in Capistrano, Sarasota, Estrella, Belmonte, and other named neighborhoods. Those prices are history. They are not comps for a resale this month. A resale price depends on the street, the plan, the condition, the lot, and the view.",
         "Online estimate tools are not used on this site. A pricing talk starts with closed sales from the MLS, adjusted for the house in front of you. That work happens in a listing consult or a buyer consult, not in a paragraph that pretends to know today’s median.",
         "When the market report is updated, each stat will name the source and the month in the sentence. Until that file exists, the report explains the method and withholds the numbers.",
@@ -54,7 +54,7 @@ export const homeArticle: Article = {
         "The Paseos Park is the central park, and Fox Hill Park also serves the village.",
       paragraphs: [
         "Summerlin.com said The Paseos Park spans more than 12 acres and is the village gathering place. An earlier close-out article called it a 12-acre park. Both wordings are stored. The public table uses “more than 12 acres” from the dated February 28, 2019 page.",
-        "The February 2019 page lists a splash pad, trails that connect to the Summerlin trail system, and large open play areas. The earlier article adds basketball courts, picnic ramadas, and open space. A 14-acre figure for Fox Hill appears in another Summerlin.com article without a clear publication date, so that acreage stays unpublished.",
+        "The February 2019 page lists a splash pad, trails that connect to the Summerlin trail system, and large open play areas. The earlier article adds basketball courts, picnic ramadas, and open space. Another Summerlin.com article gives a size for Fox Hill without a clear publication date, so that acreage stays unpublished.",
         "Fox Hill Park, in the February 28, 2019 article, has at least 20 play structures. The list includes a 32-foot climbing tower, a zip line, the Orange Beast climbing structure, a disc golf course, swings, a climbing fort, and a spinning feature. Santa Rosa’s townhomes were described as adjacent to this park.",
         "Summerlin as a whole was credited with more than 150 miles of trails and more than 250 parks in that 2019 boilerplate. Those totals are not miles inside The Paseos alone. A paseo is a landscaped path. This site does not invent a mileage for the village path until a map source states it.",
       ],
@@ -79,7 +79,7 @@ export const homeArticle: Article = {
         "Capistrano and Sarasota were CalAtlantic single-family neighborhoods. Estrella was Pulte. Belmonte was Woodside. Santa Rosa was a CalAtlantic townhome neighborhood next to Fox Hill Park. Coronado was an Edward Homes condominium. Los Altos and Altura were Toll Brothers neighborhoods. Each has its own page with the size ranges those articles actually printed.",
         "Shared entryways were called out on February 28, 2019 as a design feature of the village. A shared monument does not mean a shared association. Read the documents for the neighborhood you are buying.",
         "Elevated ground and eastward valley views were described for many homes, not for every lot. A listing photo can flatter a view. Stand in the yard and on any roof deck before you treat the view as part of the price.",
-        "Home counts of 2,800 and about 3,600 both appear in conflicting third-party notes. Neither is published. The neighborhood pages stick to named builders and the square footage those builders’ marketing articles gave.",
+        "Two different home counts appear in conflicting third-party notes. Neither is published. The neighborhood pages stick to named builders and the square footage those builders’ marketing articles gave.",
       ],
     },
     {

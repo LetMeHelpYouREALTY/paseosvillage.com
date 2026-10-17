@@ -48,6 +48,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <head>
+        <link rel="describedby" href={`${origin}/llms.txt`} />
+      </head>
       <body className="pb-16 lg:pb-0">
         <a className="skip-link" href="#main">
           Skip to content

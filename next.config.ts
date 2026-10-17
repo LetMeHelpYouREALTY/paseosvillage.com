@@ -17,6 +17,9 @@ const contentSecurityPolicy = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: { formats: ["image/avif", "image/webp"] },
+  async rewrites() {
+    return [{ source: "/:path+\\.md", destination: "/md/:path+" }];
+  },
   async redirects() {
     return [
       { source: "/docs/:path*", destination: "/", permanent: true },

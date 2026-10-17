@@ -9,26 +9,16 @@ import { OfficeVisit } from "@/components/OfficeVisit";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { TrackedCall } from "@/components/TrackedCall";
 import type { Article } from "@/content/types";
+import { crumbsFor } from "@/lib/breadcrumbs";
+import { articleUpdated, formatDay } from "@/lib/dates";
 import { pageGraphs } from "@/lib/schema";
-import { AGENT_NAME, CONTENT_UPDATED_LABEL, SITE_PHONE } from "@/lib/site";
+import { AGENT_NAME, SITE_PHONE } from "@/lib/site";
 
 const sharedLinks = [
   { href: "/", label: "The Paseos in Summerlin" },
   { href: "/market-report", label: "The Paseos market report" },
   { href: "/homes-for-sale", label: "Homes for sale in The Paseos" },
 ];
-
-function crumbsFor(article: Article): { name: string; path: string }[] {
-  const crumbs = [{ name: "The Paseos Summerlin", path: "/" }];
-  if (article.path.startsWith("/neighborhoods/") && article.path !== "/neighborhoods") {
-    crumbs.push({ name: "Neighborhoods in The Paseos", path: "/neighborhoods" });
-  }
-  if (article.path.startsWith("/paseos-vs/")) {
-    crumbs.push({ name: "The Paseos comparisons", path: "/neighborhoods" });
-  }
-  if (article.path !== "/") crumbs.push({ name: article.h1, path: article.path });
-  return crumbs;
-}
 
 export function ArticlePage({
   article,
@@ -68,9 +58,12 @@ export function ArticlePage({
             </nav>
             <p className="eyebrow">{article.eyebrow}</p>
             <h1 className="mt-4 max-w-5xl">{article.h1}</h1>
-            <p className="answer mt-6">{article.answer}</p>
+            <p id="direct-answer" className="answer mt-6">
+              {article.answer}
+            </p>
             <p className="mt-6 text-sm">
-              Last updated {CONTENT_UPDATED_LABEL}. By <Link href="/about">{AGENT_NAME}</Link>.
+              Last updated <time dateTime={articleUpdated(article)}>{formatDay(articleUpdated(article))}</time>. By{" "}
+              <Link href="/about">{AGENT_NAME}</Link>.
             </p>
           </div>
         </header>

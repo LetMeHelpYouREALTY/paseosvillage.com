@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { SEARCH_AGENTS, TRAINING_AGENTS } from "../src/lib/crawlers.mjs";
+import { contentIssues } from "./content-rules.mjs";
 
 const base = (process.env.SEO_CHECK_URL || "http://localhost:3000").replace(/\/$/, "");
 const pages = [
@@ -30,6 +32,16 @@ const meta = (html, name) =>
   );
 const canonical = (html) =>
   attr(tags(html, "link").find((tag) => attr(tag, "rel") === "canonical") || "", "href");
+const visibleText = (html) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&#x27;|&#39;|&apos;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ");
 
 let count = 0;
 const check = (condition, message) => {
@@ -61,7 +73,20 @@ for (const [path, html] of results) {
   check(html.includes("RealEstateAgent"), `${path}: agent schema`);
   check(html.includes("702-XXX-XXXX"), `${path}: site phone`);
   check(html.includes("Last updated"), `${path}: updated line`);
-  check(!/\bfamily-friendly\b|\bexclusive\b|\bgood schools\b/i.test(html), `${path}: fair housing`);
+  check(html.includes('id="direct-answer"'), `${path}: direct answer`);
+  check(html.includes("#webpage"), `${path}: webpage id`);
+  check(html.includes("#brokerage"), `${path}: brokerage id`);
+  check(html.includes("#person"), `${path}: person id`);
+  check(html.includes('rel="describedby"'), `${path}: describedby`);
+  check(
+    tags(html, "link").some((tag) => attr(tag, "type") === "text/markdown"),
+    `${path}: markdown alternate`,
+  );
+  const jsonLd = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+    .map((match) => match[1])
+    .join("\n");
+  const issues = contentIssues(`${visibleText(html)}\n${jsonLd}`);
+  check(issues.length === 0, `${path}: ${issues.join("; ") || "content rules"}`);
   for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
     JSON.parse(json);
     count++;
@@ -80,9 +105,21 @@ const robots = await fetch(`${base}/robots.txt`);
 check(robots.status === 200, "robots status");
 const robotsText = await robots.text();
 check(robotsText.includes("Allow: /"), "robots allow");
-check(robotsText.includes("GPTBot"), "GPTBot");
-check(robotsText.includes("PerplexityBot"), "PerplexityBot");
 check(robotsText.includes("Sitemap:") === indexable, "robots sitemap policy");
+for (const agent of [...SEARCH_AGENTS, ...TRAINING_AGENTS]) {
+  check(robotsText.includes(agent), `robots names ${agent}`);
+}
+const robotBlocks = robotsText.split(/\n\s*\n/);
+if (indexable) {
+  check(!robotsText.includes("Disallow:"), "indexable robots have no disallow");
+} else {
+  for (const agent of TRAINING_AGENTS) {
+    const block = robotBlocks.find((item) => item.includes(agent));
+    check(block?.includes("Disallow: /"), `${agent} disallowed when not indexable`);
+  }
+  const wildcard = robotBlocks.find((item) => /user-agent:\s*\*/i.test(item));
+  check(wildcard?.includes("Allow: /"), "wildcard allow when not indexable");
+}
 
 const missing = await fetch(`${base}/paseos-missing`);
 check(missing.status === 404, "real 404");
@@ -93,7 +130,32 @@ check([307, 308].includes(oldBuy.status), "old buy redirect");
 
 const llms = await fetch(`${base}/llms.txt`);
 check(llms.status === 200, "llms.txt");
-check((await llms.text()).includes("The Paseos"), "llms body");
+const llmsBody = await llms.text();
+check(llmsBody.includes("> "), "llms blockquote");
+check(llmsBody.includes("## Pages"), "llms pages");
+check(llmsBody.includes("## Optional"), "llms optional");
+check(contentIssues(llmsBody).length === 0, "llms content rules");
+check(!xml.includes(".md</loc>") && !xml.includes(".md"), "sitemap omits markdown");
+
+for (const [path, html] of results) {
+  const mdPath = path === "/" ? "/index.md" : `${path}.md`;
+  const md = await fetch(base + mdPath);
+  check(md.status === 200, `${mdPath} status ${md.status}`);
+  check(md.headers.get("content-type")?.includes("text/markdown"), `${mdPath} type`);
+  const link = md.headers.get("link") || "";
+  check(link.includes('rel="canonical"'), `${mdPath} canonical link`);
+  check(link.includes("describedby"), `${mdPath} describedby link`);
+  const body = await md.text();
+  check(contentIssues(body).length === 0, `${mdPath} content rules`);
+  const plain = visibleText(html);
+  for (const block of body.split(/\n\n+/)) {
+    const trimmed = block.trim();
+    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("Canonical page:")) continue;
+    check(plain.includes(trimmed.replace(/\s+/g, " ")), `${mdPath} missing paragraph: ${trimmed.slice(0, 90)}`);
+  }
+}
+const missingMd = await fetch(`${base}/paseos-missing.md`);
+check(missingMd.status === 404, "markdown 404");
 
 const og = await fetch(`${base}/api/og?title=The%20Paseos%20Summerlin`);
 check(og.headers.get("content-type")?.includes("image/png"), "og png type");

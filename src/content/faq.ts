@@ -49,12 +49,12 @@ const faqs: Faq[] = [
   {
     question: "How many homes are in The Paseos?",
     answer:
-      "Not published. Claims near 2,800 and near 3,600 conflict. Neither is shown until a primary source confirms a count.",
+      "Not published. Two third-party home counts conflict. Neither is shown until a primary source confirms a count.",
   },
   {
     question: "How many acres is the village?",
     answer:
-      "Not published. Claims near 500 acres and near 750 acres conflict. Summerlin’s 22,500 acres is the master plan, not this village.",
+      "Not published. Two third-party acreage claims conflict. Summerlin’s 22,500 acres is the master plan, not this village.",
   },
   {
     question: "Which builders were named in The Paseos?",

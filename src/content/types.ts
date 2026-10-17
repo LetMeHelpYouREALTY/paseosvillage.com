@@ -11,6 +11,8 @@ export type Cta = "call" | "form" | "search";
 
 export type Article = {
   path: string;
+  /** YYYY-MM-DD. Omit to use the site publication date. */
+  updated?: string;
   title: string;
   description: string;
   h1: string;

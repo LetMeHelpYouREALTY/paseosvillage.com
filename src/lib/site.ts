@@ -5,7 +5,6 @@ export { SITE_PHONE, SITE_PHONE_TEL } from "./phone";
 
 export const SITE_NAME = "The Paseos Summerlin";
 export const CONTENT_UPDATED = "2026-10-17";
-export const CONTENT_UPDATED_LABEL = "October 17, 2026";
 
 export const AGENT_NAME = "Dr. Jan Duffy";
 export const AGENT_CREDENTIAL = "REALTOR®";

@@ -31,7 +31,7 @@ export const livingArticle: Article = {
       paragraphs: [
         "Start with The Paseos Park. The February 28, 2019 Summerlin.com article says it spans more than 12 acres and is the gathering place. Trails from the park connect into the wider Summerlin trail system. The page also lists a splash pad and large open play areas. An earlier article adds basketball courts and picnic ramadas. Use both lists, and expect the city or the association to be the authority on what is open this week.",
         "Fox Hill Park is the second park. The same February 2019 page lists at least 20 play structures: a 32-foot climbing tower, a zip line, the Orange Beast, a disc golf course, swings, a climbing fort, and a spinning feature. Santa Rosa townhomes were described as adjacent to this park, so some streets sit closer to the tower than others.",
-        "A separate Summerlin.com article calls Fox Hill 14 acres. That page did not show a clear publication date in the copy retrieved on October 17, 2026, so the acreage is stored and not shown as a settled fact. The role of the park is settled enough to name: Summerlin.com says it serves the village.",
+        "A separate Summerlin.com article gives a size for Fox Hill. That page did not show a clear publication date in the copy retrieved on October 17, 2026, so the acreage is stored and not shown as a settled fact. The role of the park is settled enough to name: Summerlin.com says it serves the village.",
         "The Vistas pool and community center are a different stop. The close-out article called them resident amenities a short trip from Paseos neighborhoods. Do not fold that pool into The Paseos Park. Access rules for resident centers need a current check with Summerlin.",
       ],
     },
