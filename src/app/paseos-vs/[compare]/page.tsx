@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/ArticlePage";
 import { comparisonArticles } from "@/content/comparison-articles";
 import { comparisonBySlug, comparisons } from "@/data/comparisons";
+import { formatAsOf } from "@/lib/dates";
 import { pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
@@ -50,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ compare: stri
             </tbody>
           </table>
           <p className="mt-4 text-sm">
-            Source: <a href={data.sourceUrl}>{data.sourceUrl}</a>. As of {data.asOf}.
+            Source: <a href={data.sourceUrl}>{data.sourceUrl}</a>. As of {formatAsOf(data.asOf)}.
           </p>
         </div>
       </section>

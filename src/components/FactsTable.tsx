@@ -1,4 +1,5 @@
 import { publishedFacts } from "@/data/paseos";
+import { formatAsOf } from "@/lib/dates";
 
 export function FactsTable({ ids }: { ids: string[] }) {
   const rows = publishedFacts(ids);
@@ -29,7 +30,7 @@ export function FactsTable({ ids }: { ids: string[] }) {
                   </span>
                 )}
               </td>
-              <td>{row.asOf}</td>
+              <td>{formatAsOf(row.asOf)}</td>
             </tr>
           ))}
         </tbody>

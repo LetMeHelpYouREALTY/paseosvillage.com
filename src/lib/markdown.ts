@@ -2,7 +2,7 @@ import type { Article } from "../content/types";
 import { comparisonBySlug } from "../data/comparisons";
 import { neighborhoodBySlug, neighborhoods } from "../data/neighborhoods";
 import { publishedFacts } from "../data/paseos";
-import { articleUpdated, formatDay } from "./dates";
+import { articleUpdated, formatAsOf, formatDay } from "./dates";
 import {
   AGENT_CREDENTIAL,
   AGENT_NAME,
@@ -26,7 +26,7 @@ function factsBlock(ids: string[]): string[] {
   if (rows.length === 0) return [];
   const lines = ["## Key facts", ""];
   for (const row of rows) {
-    lines.push(row.label, "", String(row.value), "", sourceText(row.source, row.sourceUrl), "", row.asOf, "");
+    lines.push(row.label, "", String(row.value), "", sourceText(row.source, row.sourceUrl), "", formatAsOf(row.asOf), "");
   }
   return lines;
 }
@@ -55,7 +55,7 @@ function pageBlock(article: Article): string[] {
       "",
       "Source date",
       "",
-      neighborhood.asOf,
+      formatAsOf(neighborhood.asOf),
       "",
     ];
   }
@@ -66,7 +66,7 @@ function pageBlock(article: Article): string[] {
       `## The Paseos and ${data.name}`,
       "",
       ...data.rows.flatMap((row) => [row.label, "", row.paseos, "", row.other, ""]),
-      `Source: ${data.sourceUrl}. As of ${data.asOf}.`,
+      `Source: ${data.sourceUrl}. As of ${formatAsOf(data.asOf)}.`,
       "",
     ];
   }

@@ -1,4 +1,5 @@
 import { neighborhoods, type Neighborhood } from "../data/neighborhoods";
+import { formatAsOf } from "../lib/dates";
 import type { Article, Section } from "./types";
 
 function productLabel(product: Neighborhood["product"]): string {
@@ -76,7 +77,9 @@ export function neighborhoodArticle(n: Neighborhood): Article {
       heading: `How do you read a resale listing in ${n.name}?`,
       answer: `Read living area, lot notes, and included options, then compare only similar ${n.name} sales.`,
       paragraphs: [
-        `${sizeFact} Treat that range as the new-home snapshot in the article dated ${n.asOf}. Additions and conversion of lofts can move a resale off the original range. The MLS living area is the number to discuss.`,
+        n.asOf === "UNKNOWN"
+          ? `${sizeFact} Treat that range as the new-home snapshot in the article. The page did not print a publication date. Additions and conversion of lofts can move a resale off the original range. The MLS living area is the number to discuss.`
+          : `${sizeFact} Treat that range as the new-home snapshot in the article dated ${formatAsOf(n.asOf)}. Additions and conversion of lofts can move a resale off the original range. The MLS living area is the number to discuss.`,
         "Photos can hide a road, a park light, or a neighboring roof deck. Tour the room the camera favored, then the room it skipped. Material notes that matter in this village are stone, wood, and how the light lands, which is also what the photo brief asks Dr. Jan to shoot.",
         "Association fees, rental rules, and architectural review are not in the Summerlin.com marketing lines used here. They belong in the resale package. Ask for it before you shorten a contingency.",
         "Downtown Summerlin is about one mile from the village in the February 28, 2019 article. That mile is not a walk score and not a drive time to the Strip. Measure the trip you actually take.",

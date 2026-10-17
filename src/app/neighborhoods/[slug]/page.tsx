@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { ArticlePage } from "@/components/ArticlePage";
 import { neighborhoodArticle } from "@/content/neighborhood-articles";
 import { neighborhoodBySlug, neighborhoods } from "@/data/neighborhoods";
+import { formatAsOf } from "@/lib/dates";
 import { pageMetadata } from "@/lib/metadata";
 
 export function generateStaticParams() {
@@ -44,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </div>
             <div className="grid grid-cols-[9rem_1fr] gap-3 border-b border-stone py-3">
               <dt>Source date</dt>
-              <dd>{neighborhood.asOf}</dd>
+              <dd>{formatAsOf(neighborhood.asOf)}</dd>
             </div>
           </dl>
         </div>

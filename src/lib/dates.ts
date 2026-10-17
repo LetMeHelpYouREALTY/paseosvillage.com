@@ -8,6 +8,10 @@ export function articleUpdated(article: Pick<Article, "updated">): string {
   return article.updated ?? CONTENT_UPDATED;
 }
 
+export function formatAsOf(value: string): string {
+  return value === "UNKNOWN" ? "not printed on the source page" : value;
+}
+
 export function formatDay(iso: string): string {
   return new Intl.DateTimeFormat("en-US", {
     dateStyle: "long",

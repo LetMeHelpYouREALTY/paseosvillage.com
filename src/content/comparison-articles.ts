@@ -1,4 +1,5 @@
 import { comparisons } from "../data/comparisons";
+import { formatAsOf } from "../lib/dates";
 import type { Article } from "./types";
 
 const answers: Record<string, string> = {
@@ -15,7 +16,7 @@ export const comparisonArticles: Article[] = comparisons.map((item) => ({
   title: `The Paseos vs ${item.name} | Summerlin`,
   description: `How The Paseos in Summerlin, Las Vegas 89138 differs from ${item.name}, using Summerlin.com place facts only.`,
   h1: `The Paseos vs ${item.name} in Summerlin`,
-  eyebrow: `Sources as of ${item.asOf}`,
+  eyebrow: item.asOf === "UNKNOWN" ? "Source date not printed on the page" : `Sources as of ${formatAsOf(item.asOf)}`,
   answer: answers[item.slug] ?? item.summary,
   factIds: ["west-of-215", "downtown-distance", "park-acres"],
   sections: [
@@ -47,7 +48,10 @@ export const comparisonArticles: Article[] = comparisons.map((item) => ({
     },
     {
       question: "Where is the source?",
-      answer: `The primary page is ${item.sourceUrl}. The as-of note is ${item.asOf}.`,
+      answer:
+        item.asOf === "UNKNOWN"
+          ? `The primary page is ${item.sourceUrl}. That page did not print a publication date.`
+          : `The primary page is ${item.sourceUrl}. The as-of note is ${formatAsOf(item.asOf)}.`,
     },
     {
       question: "How do you search The Paseos instead?",
