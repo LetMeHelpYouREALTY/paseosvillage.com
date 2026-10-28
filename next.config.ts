@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://em.realscout.com https://www.realscout.com https://va.vercel-scripts.com https://www.googletagmanager.com",
-  "connect-src 'self' https://em.realscout.com https://www.realscout.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.google-analytics.com https://region1.google-analytics.com",
-  "img-src 'self' data: blob: https:",
+  "script-src https://widgetbe.com https://*.widgetbe.com 'self' 'unsafe-inline' https://em.realscout.com https://www.realscout.com https://va.vercel-scripts.com https://www.googletagmanager.com",
+  "connect-src https://widgetbe.com https://*.widgetbe.com 'self' https://em.realscout.com https://www.realscout.com https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.google-analytics.com https://region1.google-analytics.com",
+  "img-src https://widgetbe.com https://*.widgetbe.com 'self' data: blob: https:",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data:",
-  "frame-src https://www.google.com https://maps.google.com https://www.realscout.com",
+  "frame-src https://widgetbe.com https://*.widgetbe.com https://www.google.com https://maps.google.com https://www.realscout.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
