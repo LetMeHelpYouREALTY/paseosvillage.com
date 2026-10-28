@@ -12,6 +12,7 @@ import { canIndex } from "@/lib/site-url.mjs";
 import { siteGraphs } from "@/lib/schema";
 import { SITE_NAME, SITE_PHONE, siteOrigin } from "@/lib/site";
 
+import Script from "next/script";
 const display = Cormorant_Garamond({
   subsets: ["latin"],
   weight: "600",
@@ -67,7 +68,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ? (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         ) : null}
-      </body>
+      
+        {/* Follow Up Boss pixel (Widget Tracker) */}
+        <Script id="fub-widget-tracker" strategy="afterInteractive">{`
+(function(w,i,d,g,e,t){w["WidgetTrackerObject"]=g;(w[g]=w[g]||function()
+{(w[g].q=w[g].q||[]).push(arguments);}),(w[g].ds=1*new Date());(e="script"),
+(t=d.createElement(e)),(e=d.getElementsByTagName(e)[0]);t.async=1;t.src=i;
+e.parentNode.insertBefore(t,e);})
+(window,"https://widgetbe.com/agent",document,"widgetTracker");
+window.widgetTracker("create", "WT-XQHVYQWW");
+window.widgetTracker("send", "pageview");
+        `}</Script>
+</body>
     </html>
   );
 }
