@@ -11,6 +11,7 @@ import { TrackedCall } from "@/components/TrackedCall";
 import { canIndex } from "@/lib/site-url.mjs";
 import { siteGraphs } from "@/lib/schema";
 import { SITE_NAME, SITE_PHONE, siteOrigin } from "@/lib/site";
+import WidgetTracker from './widget-tracker'
 
 const display = Cormorant_Garamond({
   subsets: ["latin"],
@@ -67,6 +68,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ? (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         ) : null}
+        <WidgetTracker />
       </body>
     </html>
   );
