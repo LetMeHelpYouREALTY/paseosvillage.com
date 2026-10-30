@@ -2,8 +2,6 @@ import Link from "next/link";
 import {
   AGENT_CREDENTIAL,
   AGENT_NAME,
-  BROKERAGE,
-  LICENSE,
   OFFICE_ADDRESS,
   SITE_PHONE,
 } from "@/lib/site";
@@ -30,21 +28,13 @@ export default function Footer() {
           <div>
             <p className="font-display text-4xl text-sand">The Paseos</p>
             <p className="mt-4 max-w-xl text-sand">
-              {AGENT_NAME}, {AGENT_CREDENTIAL} · Nevada License {LICENSE} · {BROKERAGE} ·{" "}
+              {AGENT_NAME}, {AGENT_CREDENTIAL} ·{" "}
               {OFFICE_ADDRESS} · {SITE_PHONE}
             </p>
             <dl className="mt-4 max-w-xl text-sm text-sand">
               <div className="grid grid-cols-[8rem_1fr] gap-2 py-1">
                 <dt>Name</dt>
                 <dd>{AGENT_NAME}</dd>
-              </div>
-              <div className="grid grid-cols-[8rem_1fr] gap-2 py-1">
-                <dt>License</dt>
-                <dd>{LICENSE}</dd>
-              </div>
-              <div className="grid grid-cols-[8rem_1fr] gap-2 py-1">
-                <dt>Brokerage</dt>
-                <dd>{BROKERAGE}</dd>
               </div>
               <div className="grid grid-cols-[8rem_1fr] gap-2 py-1">
                 <dt>Address</dt>
@@ -74,6 +64,9 @@ export default function Footer() {
           </nav>
         </div>
         <hr className="rule my-8" />
+        <p className="text-sm text-sand">
+          Berkshire Hathaway HomeServices Nevada Properties since September 2008 · License S.0197614.LLC
+        </p>
         <p className="text-sm text-sand">
           IDX / MLS disclaimer: TODO-VERIFY brokerage listing disclaimer before launch. Listing
           information is not guaranteed. Confirm details with the listing brokerage.

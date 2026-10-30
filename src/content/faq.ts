@@ -124,12 +124,12 @@ const faqs: Faq[] = [
   {
     question: "Who is the agent?",
     answer:
-      "Dr. Jan Duffy, REALTOR®, Nevada license S.0197614.LLC, with Berkshire Hathaway HomeServices Nevada Properties.",
+      "Dr. Jan Duffy, REALTOR®. Her license and brokerage are listed in the footer.",
   },
   {
     question: "What is the office address?",
     answer:
-      "8850 W Sunset Road Suite 200, Las Vegas, NV 89148, from the BHHS.com profile retrieved October 17, 2026. Confirm it against the Google Business Profile before you rely on the pin.",
+      "8850 W Sunset Road Suite 200, Las Vegas, NV 89148, from her brokerage profile retrieved October 17, 2026. Confirm it against the Google Business Profile before you rely on the pin.",
   },
   {
     question: "What phone number should you call?",
@@ -159,7 +159,7 @@ const faqs: Faq[] = [
   {
     question: "Will the site copy other agent pages?",
     answer:
-      "No. Facts come from Summerlin.com, the BHHS profile, the district zoning tool, and the MLS once it is pulled. Competitor prose and photos are not used.",
+      "No. Facts come from Summerlin.com, her brokerage profile, the district zoning tool, and the MLS once it is pulled. Competitor prose and photos are not used.",
   },
   {
     question: "When was this page updated?",
@@ -176,8 +176,8 @@ export const faqArticle: Article = {
   h1: "FAQ: The Paseos in Summerlin",
   eyebrow: "Straight answers",
   answer:
-    "These answers cover The Paseos, a Summerlin village in Las Vegas, NV 89138. They use Summerlin.com for place facts and leave price, acreage, and home-count conflicts blank. School zoning is by address through the Clark County School District tool. Dr. Jan Duffy, license S.0197614.LLC, reviews the file before launch.",
-  factIds: ["zip", "park-acres", "downtown-distance", "vassiliadis", "agent-license"],
+    "These answers cover The Paseos, a Summerlin village in Las Vegas, NV 89138. They use Summerlin.com for place facts and leave price, acreage, and home-count conflicts blank. School zoning is by address through the Clark County School District tool. Dr. Jan Duffy reviews the file before launch.",
+  factIds: ["zip", "park-acres", "downtown-distance", "vassiliadis"],
   sections: [
     {
       id: "how",

@@ -4,12 +4,12 @@ export const aboutArticle: Article = {
   path: "/about",
   title: "Dr. Jan Duffy | The Paseos Summerlin",
   description:
-    "Dr. Jan Duffy, REALTOR®, Nevada license S.0197614.LLC, with Berkshire Hathaway HomeServices Nevada Properties, for The Paseos in Summerlin.",
+    "Dr. Jan Duffy, REALTOR®, for The Paseos in Summerlin.",
   h1: "Dr. Jan Duffy and The Paseos, Summerlin",
-  eyebrow: "Nevada license S.0197614.LLC",
+  eyebrow: "REALTOR® for The Paseos",
   answer:
-    "Dr. Jan Duffy is a REALTOR® with Berkshire Hathaway HomeServices Nevada Properties. Her Nevada license is S.0197614.LLC. This site is her guide to The Paseos, a Summerlin village in Las Vegas, NV 89138. The office line on the BHHS.com profile is 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. Match it to the Google Business Profile before launch.",
-  factIds: ["agent-license", "zip"],
+    "Dr. Jan Duffy is a REALTOR®. Her license and brokerage are listed in the footer. This site is her guide to The Paseos, a Summerlin village in Las Vegas, NV 89138. The office line on her brokerage profile is 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. Match it to the Google Business Profile before launch.",
+  factIds: ["zip"],
   measured: true,
   longform: false,
   cta: "form",
@@ -17,9 +17,9 @@ export const aboutArticle: Article = {
     {
       id: "license",
       heading: "What credentials are on the record?",
-      answer: "The public record used here is the license number, the brokerage, and the BHHS profile.",
+      answer: "The public record used here is her license, her brokerage, and her brokerage profile, all named in the footer.",
       paragraphs: [
-        "The BHHS.com profile retrieved October 17, 2026 lists Dr. Jan Duffy as a sales associate at Berkshire Hathaway HomeServices Nevada Properties, 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. The bhhsnv.com profile lists the same license, S.0197614.LLC, at a Southwest office with a slightly shorter street line. One address is shown on this site. The other is a conflict to resolve against the Google Business Profile.",
+        "Her brokerage profile retrieved October 17, 2026 lists Dr. Jan Duffy as a sales associate at 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. A second brokerage profile lists the same license at a Southwest office with a slightly shorter street line. One address is shown on this site. The other is a conflict to resolve against the Google Business Profile.",
         "Languages beyond English are not listed. A prior version of this website named additional languages. They come back only if the profile or Dr. Jan confirms them.",
         "Sales totals, years in the business, and awards are omitted. They are easy to overstate and they were not required to explain the license.",
       ],
@@ -40,7 +40,7 @@ export const aboutArticle: Article = {
       answer: "The published office is 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. Hours are not listed yet.",
       paragraphs: [
         "Hours stay off the page until the Google Business Profile hours are copied exactly. A guessed schedule would create a second, false NAP.",
-        "The map on this page pins the BHHS.com address. Treat the pin as provisional. Directions use that same string. The reviews button searches her name and brokerage until the profile URL is confirmed.",
+        "The map on this page pins the brokerage-profile address. Treat the pin as provisional. Directions use that same string. The reviews button searches her name and brokerage until the profile URL is confirmed.",
         "The phone in the header is the tracking number for this website. It is still the placeholder 702-XXX-XXXX. Do not substitute the office line into the header without changing the constant in one file.",
       ],
     },
@@ -48,11 +48,11 @@ export const aboutArticle: Article = {
   faqs: [
     {
       question: "What is Dr. Jan Duffy’s Nevada license number?",
-      answer: "S.0197614.LLC. It is printed in the footer on every page and on the BHHS profiles linked from this site.",
+      answer: "It is printed in the footer on every page and on the brokerage profiles linked from this site.",
     },
     {
       question: "Which brokerage is on the site?",
-      answer: "Berkshire Hathaway HomeServices Nevada Properties. The schema marks that firm as the parent organization.",
+      answer: "The brokerage is named in the footer on every page. The schema marks that firm as the parent organization.",
     },
     {
       question: "Where do you meet her?",
@@ -74,8 +74,8 @@ export const contactArticle: Article = {
   h1: "Contact Dr. Jan Duffy in The Paseos, Summerlin",
   eyebrow: "One form, one number",
   answer:
-    "Contact Dr. Jan Duffy about The Paseos in Summerlin, Las Vegas, NV 89138, by the phone in the header or the form on this page. She is a REALTOR® with Berkshire Hathaway HomeServices Nevada Properties, license S.0197614.LLC. The office address on file is 8850 W Sunset Road Suite 200, Las Vegas, NV 89148, pending a Google Business Profile match.",
-  factIds: ["agent-license", "zip"],
+    "Contact Dr. Jan Duffy about The Paseos in Summerlin, Las Vegas, NV 89138, by the phone in the header or the form on this page. She is a REALTOR®. The office address on file is 8850 W Sunset Road Suite 200, Las Vegas, NV 89148, pending a Google Business Profile match.",
+  factIds: ["zip"],
   measured: true,
   longform: false,
   cta: "form",
@@ -93,7 +93,7 @@ export const contactArticle: Article = {
     {
       id: "visit",
       heading: "Can you visit the office?",
-      answer: "The map shows the BHHS.com address. Call before you drive until hours are confirmed.",
+      answer: "The map shows the brokerage-profile address. Call before you drive until hours are confirmed.",
       paragraphs: [
         "Hours are unpublished. The directions link uses 8850 W Sunset Road Suite 200, Las Vegas, NV 89148. If the Google Business Profile uses a different suite, the map will be corrected before launch and the footer will change with it.",
         "Showings in The Paseos start from the listing appointment, not from a walk-in at the park. Tell the form which neighborhood you want to see.",

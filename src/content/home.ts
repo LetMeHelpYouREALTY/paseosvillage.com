@@ -90,7 +90,7 @@ export const homeArticle: Article = {
       paragraphs: [
         "The homes page loads a RealScout search. Use 89138 as the location filter while you look. ZIP codes can cross village lines, so read the subdivision or neighborhood name before you book a tour.",
         "Bring three checks to the first pass: the association documents, the lot and view, and the distance you actually walk to The Paseos Park or Fox Hill Park. A map pin is not a walk.",
-        "Dr. Jan Duffy, license S.0197614.LLC, is the REALTOR® behind this site, with Berkshire Hathaway HomeServices Nevada Properties. A call or the form on the buy page is the next step. She does not publish a firsthand street story here until she writes it herself.",
+        "Dr. Jan Duffy is the REALTOR® behind this site. A call or the form on the buy page is the next step. She does not publish a firsthand street story here until she writes it herself.",
         "Seller pricing, prep, and MLS marketing sit on the sell page. The market report explains which stats are waiting on a verified MLS pull.",
       ],
     },
@@ -119,7 +119,7 @@ export const homeArticle: Article = {
     {
       question: "Who publishes this site?",
       answer:
-        "Dr. Jan Duffy, REALTOR®, Nevada license S.0197614.LLC, Berkshire Hathaway HomeServices Nevada Properties. The phone on this site is a tracking-number placeholder until the line is assigned.",
+        "Dr. Jan Duffy, REALTOR®. The phone on this site is a tracking-number placeholder until the line is assigned.",
     },
   ],
 };
