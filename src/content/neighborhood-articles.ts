@@ -90,7 +90,7 @@ export function neighborhoodArticle(n: Neighborhood): Article {
       heading: `How do you tour ${n.name} with Dr. Jan Duffy?`,
       answer: `Search 89138, confirm the listing says ${n.name}, and send the buy form if you want a consult.`,
       paragraphs: [
-        "The homes page loads RealScout. Type the ZIP, then the neighborhood name. If the widget does not filter by subdivision, use the name inside the results. Dr. Jan’s license is S.0197614.LLC with Berkshire Hathaway HomeServices Nevada Properties.",
+        "The homes page loads RealScout. Type the ZIP, then the neighborhood name. If the widget does not filter by subdivision, use the name inside the results. Dr. Jan’s license and brokerage are listed in the footer of every page.",
         "A consult covers comps for this product, not a village-wide median. The market report explains why the median is blank. Offer strategy waits for those comps.",
         "Seller questions about a house already in this neighborhood belong on the sell page. Pricing still starts from similar closed sales, not from the builder’s old asking range.",
         "The local expert note on this page is empty until Dr. Jan writes a firsthand detail. Nothing above is a personal anecdote.",

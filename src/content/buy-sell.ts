@@ -67,7 +67,7 @@ export const buyArticle: Article = {
   h1: "Buy a home in The Paseos, Summerlin",
   eyebrow: "Search, then a consult",
   answer:
-    "Buying in The Paseos means searching Summerlin listings in Las Vegas, NV 89138, then checking the neighborhood name, the association, and the lot. Dr. Jan Duffy, license S.0197614.LLC, walks that path with you. Start with the live search or send the form on this page. A median price is not part of the advice until the MLS figure is verified.",
+    "Buying in The Paseos means searching Summerlin listings in Las Vegas, NV 89138, then checking the neighborhood name, the association, and the lot. Dr. Jan Duffy walks that path with you. Start with the live search or send the form on this page. A median price is not part of the advice until the MLS figure is verified.",
   factIds: ["zip", "downtown-distance", "park-acres"],
   measured: true,
   longform: false,
@@ -124,7 +124,7 @@ export const sellArticle: Article = {
   h1: "Sell a home in The Paseos, Summerlin",
   eyebrow: "Comps before a list price",
   answer:
-    "Selling in The Paseos starts with recent sales of similar homes in Summerlin’s village, not with a Las Vegas-wide average. Dr. Jan Duffy, license S.0197614.LLC, will recommend a list price after she reads those comps. Send the form for a valuation consult. This page does not print a median, because the 2026 figures on file conflict.",
+    "Selling in The Paseos starts with recent sales of similar homes in Summerlin’s village, not with a Las Vegas-wide average. Dr. Jan Duffy will recommend a list price after she reads those comps. Send the form for a valuation consult. This page does not print a median, because the 2026 figures on file conflict.",
   factIds: ["zip", "west-of-215"],
   measured: true,
   longform: false,
