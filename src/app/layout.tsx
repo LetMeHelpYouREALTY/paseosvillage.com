@@ -13,6 +13,7 @@ import { siteGraphs } from "@/lib/schema";
 import { SITE_NAME, SITE_PHONE, siteOrigin } from "@/lib/site";
 
 import Script from "next/script";
+import { SpeedInsights as VercelSpeedInsights } from "@vercel/speed-insights/next";
 const display = Cormorant_Garamond({
   subsets: ["latin"],
   weight: "600",
@@ -79,6 +80,7 @@ e.parentNode.insertBefore(t,e);})
 window.widgetTracker("create", "WT-XQHVYQWW");
 window.widgetTracker("send", "pageview");}
         `}</Script>
+  <VercelSpeedInsights />
 </body>
     </html>
   );
